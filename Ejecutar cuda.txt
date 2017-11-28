@@ -1,0 +1,3 @@
+/usr/local/cuda-7.5/bin/nvcc maincuda.cu -o maincuda `pkg-config --cflags --libs opencv`
+
+./maincuda 720.jpg

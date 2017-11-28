@@ -1,0 +1,78 @@
+Authors:
+Jhonatan Javier Guzman - jhjguzmanri
+Jonathan Martinez Chingate - jomartinezch
+
+
+#How to compile: Just GNU/Linux
+
+#WARNING: It is possible opencv and C++ Libraries in your machine are in different path to -I/usr/local/include	and -I/usr/local/include/opencv
+
+	#How to compile secuencial
+	g++ -I/usr/local/include main.cpp -o main -I/usr/local/include/opencv -L/usr/local/lib -lopencv_calib3d -lopencv_contrib -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_gpu -lopencv_highgui -lopencv_imgproc -lopencv_legacy -lopencv_ml -lopencv_nonfree -lopencv_objdetect -lopencv_ocl -lopencv_photo -lopencv_stitching -lopencv_superres -lopencv_ts -lopencv_video -lopencv_videostab -lrt -lpthread -lm -ldl
+
+	#How to compile parallel posix
+	g++ -I/usr/local/include mainposix.cpp -o mainposix -I/usr/local/include/opencv -L/usr/local/lib -lopencv_calib3d -lopencv_contrib -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_gpu -lopencv_highgui -lopencv_imgproc -lopencv_legacy -lopencv_ml -lopencv_nonfree -lopencv_objdetect -lopencv_ocl -lopencv_photo -lopencv_stitching -lopencv_superres -lopencv_ts -lopencv_video -lopencv_videostab -lrt -lpthread -lm -ldl
+
+	#How to compile parallel OpenMP
+	g++ -I/usr/local/include -fopenmp mainopenmp.cpp -o mainopenmp -I/usr/local/include/opencv -L/usr/local/lib -lopencv_calib3d -lopencv_contrib -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_gpu -lopencv_highgui -lopencv_imgproc -lopencv_legacy -lopencv_ml -lopencv_nonfree -lopencv_objdetect -lopencv_ocl -lopencv_photo -lopencv_stitching -lopencv_superres -lopencv_ts -lopencv_video -lopencv_videostab -lrt -lpthread -lm -ldl
+
+	WARNING: Do not use -lopencv_nonfree in lab
+
+	Short way:
+
+	g++ main.cpp -o main `pkg-config --cflags --libs opencv` -lpthread -lm
+	g++ mainposix.cpp -o mainposix `pkg-config --cflags --libs opencv` -lpthread -lm
+	g++ -fopenmp mainopenmp.cpp -o mainopenmp `pkg-config --cflags --libs opencv` -lpthread -lm
+	
+
+#How to execute secuencial
+	#Normal
+	./main 720.jpg 
+
+	#With kernel parameter: By default kernel is 3, this value can be between 2 and 16
+	./main 720.jpg 5
+
+#How to execute parallel posix	
+	#Normal: By default kernel is 3 and threads 4 
+	./mainposix 720.jpg
+
+	#With kernel parameter: By default kernel is 3, this value can be between 2 and 16
+	./mainposix 720.jpg 5
+
+	#With kernel parameter and threads: By default threads is 4, this value can be 2,4,8 or 16
+	./mainposix 720.jpg 5 8
+
+	#WARNING: If you want to specific number of threads, You must specific kernel size even if this value is default (3)
+
+#How to execute parallel OpenMP
+	#Normal: By default kernel is 3 and threads 4 
+	./mainopenmp 720.jpg
+
+	#With kernel parameter: By default kernel is 3, this value can be between 2 and 16
+	./mainopenmp 720.jpg 5
+
+	#With kernel parameter and threads: By default threads is 4, this value can be 2,4,8 or 16
+	./mainopenmp 720.jpg 5 8
+
+	#WARNING: If you want to specific number of threads, You must specific kernel size even if this value is default (3)
+
+#Script
+
+	In order to use script for execute you should change permissons
+	chmod +x ./script_ejecutar_todo.sh
+
+	Be sure the three cpp files are in the same folder with ./script_ejecutar_todo.sh
+
+
+#Issues:
+
+#WARNING: Issue 1 is really common, please read the blog for fix
+
+1. Shared library can't be shared: OpenCV runtime error: "libopencv_core.so.3.2: cannot open shared object file: No such file or directory"
+	https://github.com/GaoHongchen/DIPDemoQt5/issues/1
+
+2. Using Opencv libraries
+	https://www.learnopencv.com/how-to-compile-opencv-sample-code/ 
+
+3. Opencv doesn't work with C, only C++
+	https://bugzilla.redhat.com/show_bug.cgi?id=991552

@@ -1,0 +1,3 @@
+Intel Xeon CPU E3-1245 v3 @ 3.4Ghz x 8
+Tarjeta de video Quadro K600
+16Gb de RAM
